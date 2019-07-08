@@ -1,0 +1,27 @@
+sw1:
+  interfaces:
+    1:
+      description: Acme Internet Access
+      ipv4: 192.168.1.100
+      mac: 01:02:03:04:05:06
+      vid: 100
+    2:
+      description: BIA
+      ipv4: 192.168.0.101
+      mac: 01:02:03:04:01:01
+      vid: 100
+    3:
+      description: CIA
+      ipv4: 192.168.0.102
+      mac: 01:02:03:04:02:01
+      vid: 100
+    4:
+      description: DIA
+      ipv4: 192.168.0.103
+      mac: 01:02:03:04:04:01
+      vid: 100
+    5:
+      description: EIA
+      ipv4: 192.168.0.110
+      mac: 01:02:03:04:05:01
+      vid: 100
