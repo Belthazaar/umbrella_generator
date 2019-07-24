@@ -1,0 +1,12 @@
+switch01:
+  dp_id: 0x1
+  hardware: "Allied-Telesis"
+switch02:
+  dp_id: 0x2
+  hardware: "Allied-Telesis"
+switch03:
+  dp_id: 0x3
+  hardware: "Allied-Telesis"
+switch04:
+  dp_id: 0x4
+  hardware: "Allied-Telesis"

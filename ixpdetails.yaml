@@ -1,27 +1,166 @@
-sw1:
-  interfaces:
-    1:
-      description: Acme Internet Access
-      ipv4: 192.168.1.100
-      mac: 01:02:03:04:05:06
-      vid: 100
-    2:
-      description: BIA
-      ipv4: 192.168.0.101
-      mac: 01:02:03:04:01:01
-      vid: 100
-    3:
-      description: CIA
-      ipv4: 192.168.0.102
-      mac: 01:02:03:04:02:01
-      vid: 100
-    4:
-      description: DIA
-      ipv4: 192.168.0.103
-      mac: 01:02:03:04:04:01
-      vid: 100
-    5:
-      description: EIA
-      ipv4: 192.168.0.110
-      mac: 01:02:03:04:05:01
-      vid: 100
+switches:
+  switch01:
+    active: true
+    hostname: switch01.mgmt.example.com
+    id: 4
+    interfaces:
+      1:
+        name: Acme Internet Access
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.11
+              ipv6_addresses: []
+              macaddresses:
+              - ec:a6:f6:25:ae:fb
+      2:
+        name: BIA
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.12
+              ipv6_addresses: []
+              macaddresses:
+              - 75:66:57:b2:24:19
+      3:
+        name: CIA
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.13
+              ipv6_addresses: []
+              macaddresses:
+              - d2:ec:4c:ac:5f:e0
+      4:
+        name: DIA
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.14
+              ipv6_addresses: []
+              macaddresses:
+              - 89:10:3f:ce:19:86
+      5:
+        name: EIA
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.15
+              ipv6_addresses: []
+              macaddresses:
+              - 58:43:68:76:85:37
+      10:
+        core: true
+        name: switch01,Ethernet 10,switch02,Ethernet 10
+      11:
+        core: true
+        name: switch01,Ethernet 11,switch03,Ethernet 11
+    ipv4addr: 192.0.2.1
+    ipv6addr: 2001:db8:45::01
+    loopback_ip: 192.0.1.1
+    macaddress: 00:00:00:00:00:01
+    model: x950-28XSQ
+    name: switch01
+  switch02:
+    active: true
+    hostname: switch02.mgmt.example.com
+    id: 5
+    interfaces:
+      1:
+        name: AWS
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.21
+              ipv6_addresses: []
+              macaddresses:
+              - ee:de:47:b4:bd:f4
+      2:
+        name: GOOG
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.22
+              ipv6_addresses: []
+              macaddresses:
+              - 8d:47:6d:bd:14:4b
+      3:
+        name: Azure
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.23
+              ipv6_addresses: []
+              macaddresses:
+              - b9:88:25:fc:1a:47
+      10:
+        core: true
+        name: switch02,Ethernet 10,switch01,Ethernet 10
+      11:
+        core: true
+        name: switch02,Ethernet 11,switch03,Ethernet 11
+    ipv4addr: 192.0.2.2
+    ipv6addr: 2001:db8:45::02
+    loopback_ip: 192.0.1.2
+    macaddress: 00:00:00:00:00:02
+    model: x950-28XSQ
+    name: switch02
+  switch03:
+    active: true
+    hostname: switch03.mgmt.example.com
+    id: 6
+    interfaces:
+      1:
+        name: Asahi Net
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.31
+              ipv6_addresses: []
+              macaddresses:
+              - 80:eb:3f:eb:68:29
+      2:
+        name: iij
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.32
+              ipv6_addresses: []
+              macaddresses:
+              - f3:7a:e4:5e:49:7b
+      3:
+        name: Wide
+        vlans:
+          100:
+            details:
+              ipv4_addresses:
+              - 192.168.0.33
+              ipv6_addresses: []
+              macaddresses:
+              - 95:8a:ee:83:b5:c9
+      10:
+        core: true
+        name: switch03,Ethernet 10,switch01,Ethernet 11
+      11:
+        core: true
+        name: switch03,Ethernet 11,switch02,Ethernet 11
+    ipv4addr: 192.0.2.3
+    ipv6addr: 2001:db8:45::03
+    macaddress: 00:00:00:00:00:03
+    model: x950-28XSQ
+    name: switch03
+vlans:
+  Peering:
+    description: Peering1
+    private: false
+    vid: 100
