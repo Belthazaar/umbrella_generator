@@ -1,12 +1,9 @@
-switch01:
+S1:
   dp_id: 0x1
-  hardware: "Allied-Telesis"
-switch02:
+  hardware: "Open vSwitch"
+S2:
   dp_id: 0x2
-  hardware: "Allied-Telesis"
-switch03:
+  hardware: "Open vSwitch"
+S3:
   dp_id: 0x3
-  hardware: "Allied-Telesis"
-switch04:
-  dp_id: 0x4
-  hardware: "Allied-Telesis"
+  hardware: "Open vSwitch"

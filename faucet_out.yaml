@@ -3,84 +3,82 @@ vlans:
     vid: 100
     description: Peering1
 dps:
-  switch01:
+  S1:
     dp_id: 0x1
-    hardware: "Allied-Telesis"
+    hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "Acme Internet Access"
+        name: "S1,Ethernet 1,S2,Ethernet 1"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 1
       2:
-        name: "BIA"
+        name: "S1,Ethernet 2,S3,Ethernet 2"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 1
       3:
-        name: "CIA"
+        name: "H1"
         native_vlan: 100
         acl_in: 1
       4:
-        name: "DIA"
+        name: "H2"
         native_vlan: 100
         acl_in: 1
       5:
-        name: "EIA"
+        name: "H3"
         native_vlan: 100
         acl_in: 1
-      10:
-        name: "switch01,Ethernet 10,switch02,Ethernet 10"
-        native_vlan: 100
-        acl_in: 1
-      11:
-        name: "switch01,Ethernet 11,switch03,Ethernet 11"
-        native_vlan: 100
-        acl_in: 1
-  switch02:
+  S2:
     dp_id: 0x2
-    hardware: "Allied-Telesis"
+    hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "AWS"
+        name: "S2,Ethernet 1,S1,Ethernet 1"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 2
       2:
-        name: "GOOG"
+        name: "S2,Ethernet 2,S3,Ethernet 1"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 2
       3:
-        name: "Azure"
+        name: "H4"
         native_vlan: 100
         acl_in: 2
-      10:
-        name: "switch02,Ethernet 10,switch01,Ethernet 10"
+      4:
+        name: "H5"
         native_vlan: 100
         acl_in: 2
-      11:
-        name: "switch02,Ethernet 11,switch03,Ethernet 11"
+      5:
+        name: "H6"
         native_vlan: 100
         acl_in: 2
-  switch03:
+  S3:
     dp_id: 0x3
-    hardware: "Allied-Telesis"
+    hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "Asahi Net"
+        name: "S3,Ethernet 1,S2,Ethernet 2"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 3
       2:
-        name: "iij"
+        name: "S3,Ethernet 2,S1,Ethernet 2"
+        opstatus_reconf: false
         native_vlan: 100
         acl_in: 3
       3:
-        name: "Wide"
+        name: "H7"
         native_vlan: 100
         acl_in: 3
-      10:
-        name: "switch03,Ethernet 10,switch01,Ethernet 11"
+      4:
+        name: "H8"
         native_vlan: 100
         acl_in: 3
-      11:
-        name: "switch03,Ethernet 11,switch02,Ethernet 11"
+      5:
+        name: "H9"
         native_vlan: 100
         acl_in: 3
 acls:
@@ -88,574 +86,470 @@ acls:
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.11"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_dst: "ec:a6:f6:25:ae:fb"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.12"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_dst: "75:66:57:b2:24:19"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.13"
+      arp_tpa: "10.0.0.1"
       actions:
         output:
           port: 3
   - rule:
-      dl_dst: "d2:ec:4c:ac:5f:e0"
+      dl_dst: "00:00:00:00:00:01"
       actions:
         output:
           port: 3
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.14"
+      arp_tpa: "10.0.0.2"
       actions:
         output:
           port: 4
   - rule:
-      dl_dst: "89:10:3f:ce:19:86"
+      dl_dst: "00:00:00:00:00:02"
       actions:
         output:
           port: 4
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.15"
+      arp_tpa: "10.0.0.3"
       actions:
         output:
           port: 5
   - rule:
-      dl_dst: "58:43:68:76:85:37"
+      dl_dst: "00:00:00:00:00:03"
       actions:
         output:
           port: 5
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.21"
+      arp_tpa: "10.0.0.4"
       actions:
         output:
           failover:
             group_id: 1
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "ee:de:47:b4:bd:f4"
+      dl_dst: "00:00:00:00:00:04"
       actions:
         output:
           failover:
             group_id: 2
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.22"
+      arp_tpa: "10.0.0.5"
       actions:
         output:
           failover:
             group_id: 3
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "8d:47:6d:bd:14:4b"
+      dl_dst: "00:00:00:00:00:05"
       actions:
         output:
           failover:
             group_id: 4
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.23"
+      arp_tpa: "10.0.0.6"
       actions:
         output:
           failover:
             group_id: 5
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "b9:88:25:fc:1a:47"
+      dl_dst: "00:00:00:00:00:06"
       actions:
         output:
           failover:
             group_id: 6
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.31"
+      arp_tpa: "10.0.0.7"
       actions:
         output:
           failover:
             group_id: 7
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "80:eb:3f:eb:68:29"
+      dl_dst: "00:00:00:00:00:07"
       actions:
         output:
           failover:
             group_id: 8
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.32"
+      arp_tpa: "10.0.0.8"
       actions:
         output:
           failover:
             group_id: 9
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "f3:7a:e4:5e:49:7b"
+      dl_dst: "00:00:00:00:00:08"
       actions:
         output:
           failover:
             group_id: 10
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.33"
+      arp_tpa: "10.0.0.9"
       actions:
         output:
           failover:
             group_id: 11
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "95:8a:ee:83:b5:c9"
+      dl_dst: "00:00:00:00:00:09"
       actions:
         output:
           failover:
             group_id: 12
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   2:
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.21"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_dst: "ee:de:47:b4:bd:f4"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.22"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_dst: "8d:47:6d:bd:14:4b"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.23"
+      arp_tpa: "10.0.0.4"
       actions:
         output:
           port: 3
   - rule:
-      dl_dst: "b9:88:25:fc:1a:47"
+      dl_dst: "00:00:00:00:00:04"
       actions:
         output:
           port: 3
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.11"
+      arp_tpa: "10.0.0.5"
+      actions:
+        output:
+          port: 4
+  - rule:
+      dl_dst: "00:00:00:00:00:05"
+      actions:
+        output:
+          port: 4
+  - rule:
+      dl_type: '0x806'
+      dl_dst: "ff:ff:ff:ff:ff:ff"
+      arp_tpa: "10.0.0.6"
+      actions:
+        output:
+          port: 5
+  - rule:
+      dl_dst: "00:00:00:00:00:06"
+      actions:
+        output:
+          port: 5
+  - rule:
+      dl_type: '0x806'
+      dl_dst: "ff:ff:ff:ff:ff:ff"
+      arp_tpa: "10.0.0.1"
       actions:
         output:
           failover:
             group_id: 1001
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "ec:a6:f6:25:ae:fb"
+      dl_dst: "00:00:00:00:00:01"
       actions:
         output:
           failover:
             group_id: 1002
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.12"
+      arp_tpa: "10.0.0.2"
       actions:
         output:
           failover:
             group_id: 1003
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "75:66:57:b2:24:19"
+      dl_dst: "00:00:00:00:00:02"
       actions:
         output:
           failover:
             group_id: 1004
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.13"
+      arp_tpa: "10.0.0.3"
       actions:
         output:
           failover:
             group_id: 1005
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "d2:ec:4c:ac:5f:e0"
+      dl_dst: "00:00:00:00:00:03"
       actions:
         output:
           failover:
             group_id: 1006
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.14"
+      arp_tpa: "10.0.0.7"
       actions:
         output:
           failover:
             group_id: 1007
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "89:10:3f:ce:19:86"
+      dl_dst: "00:00:00:00:00:07"
       actions:
         output:
           failover:
             group_id: 1008
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.15"
+      arp_tpa: "10.0.0.8"
       actions:
         output:
           failover:
             group_id: 1009
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "58:43:68:76:85:37"
+      dl_dst: "00:00:00:00:00:08"
       actions:
         output:
           failover:
             group_id: 1010
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.31"
+      arp_tpa: "10.0.0.9"
       actions:
         output:
           failover:
             group_id: 1011
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "80:eb:3f:eb:68:29"
+      dl_dst: "00:00:00:00:00:09"
       actions:
         output:
           failover:
             group_id: 1012
             ports:
-            - 10
-            - 11
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.32"
-      actions:
-        output:
-          failover:
-            group_id: 1013
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_dst: "f3:7a:e4:5e:49:7b"
-      actions:
-        output:
-          failover:
-            group_id: 1014
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.33"
-      actions:
-        output:
-          failover:
-            group_id: 1015
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_dst: "95:8a:ee:83:b5:c9"
-      actions:
-        output:
-          failover:
-            group_id: 1016
-            ports:
-            - 10
-            - 11
+            - 2
+            - 1
   3:
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.31"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_dst: "80:eb:3f:eb:68:29"
-      actions:
-        output:
-          port: 1
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.32"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_dst: "f3:7a:e4:5e:49:7b"
-      actions:
-        output:
-          port: 2
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.33"
+      arp_tpa: "10.0.0.7"
       actions:
         output:
           port: 3
   - rule:
-      dl_dst: "95:8a:ee:83:b5:c9"
+      dl_dst: "00:00:00:00:00:07"
       actions:
         output:
           port: 3
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.11"
+      arp_tpa: "10.0.0.8"
+      actions:
+        output:
+          port: 4
+  - rule:
+      dl_dst: "00:00:00:00:00:08"
+      actions:
+        output:
+          port: 4
+  - rule:
+      dl_type: '0x806'
+      dl_dst: "ff:ff:ff:ff:ff:ff"
+      arp_tpa: "10.0.0.9"
+      actions:
+        output:
+          port: 5
+  - rule:
+      dl_dst: "00:00:00:00:00:09"
+      actions:
+        output:
+          port: 5
+  - rule:
+      dl_type: '0x806'
+      dl_dst: "ff:ff:ff:ff:ff:ff"
+      arp_tpa: "10.0.0.1"
       actions:
         output:
           failover:
             group_id: 2001
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "ec:a6:f6:25:ae:fb"
+      dl_dst: "00:00:00:00:00:01"
       actions:
         output:
           failover:
             group_id: 2002
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.12"
+      arp_tpa: "10.0.0.2"
       actions:
         output:
           failover:
             group_id: 2003
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "75:66:57:b2:24:19"
+      dl_dst: "00:00:00:00:00:02"
       actions:
         output:
           failover:
             group_id: 2004
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.13"
+      arp_tpa: "10.0.0.3"
       actions:
         output:
           failover:
             group_id: 2005
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
-      dl_dst: "d2:ec:4c:ac:5f:e0"
+      dl_dst: "00:00:00:00:00:03"
       actions:
         output:
           failover:
             group_id: 2006
             ports:
-            - 10
-            - 11
+            - 2
+            - 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.14"
+      arp_tpa: "10.0.0.4"
       actions:
         output:
           failover:
             group_id: 2007
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "89:10:3f:ce:19:86"
+      dl_dst: "00:00:00:00:00:04"
       actions:
         output:
           failover:
             group_id: 2008
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.15"
+      arp_tpa: "10.0.0.5"
       actions:
         output:
           failover:
             group_id: 2009
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "58:43:68:76:85:37"
+      dl_dst: "00:00:00:00:00:05"
       actions:
         output:
           failover:
             group_id: 2010
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.21"
+      arp_tpa: "10.0.0.6"
       actions:
         output:
           failover:
             group_id: 2011
             ports:
-            - 10
-            - 11
+            - 1
+            - 2
   - rule:
-      dl_dst: "ee:de:47:b4:bd:f4"
+      dl_dst: "00:00:00:00:00:06"
       actions:
         output:
           failover:
             group_id: 2012
             ports:
-            - 10
-            - 11
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.22"
-      actions:
-        output:
-          failover:
-            group_id: 2013
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_dst: "8d:47:6d:bd:14:4b"
-      actions:
-        output:
-          failover:
-            group_id: 2014
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_type: '0x806'
-      dl_dst: "ff:ff:ff:ff:ff:ff"
-      arp_tpa: "192.168.0.23"
-      actions:
-        output:
-          failover:
-            group_id: 2015
-            ports:
-            - 10
-            - 11
-  - rule:
-      dl_dst: "b9:88:25:fc:1a:47"
-      actions:
-        output:
-          failover:
-            group_id: 2016
-            ports:
-            - 10
-            - 11
+            - 1
+            - 2

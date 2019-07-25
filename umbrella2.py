@@ -112,6 +112,7 @@ class Umbrella():
                 vids = []
 
                 if 'core' in port_dict:
+                    f_iface[iface]["opstatus_reconf"] = False
                     yang_name = port_dict["name"].split(',')
                     self.core_links[switch].setdefault(
                         iface, {yang_name[2]: yang_name[3]}
@@ -178,8 +179,13 @@ class Umbrella():
                 for addr, details in \
                         self.addresses_to_ports[other_switch].items():
                     ports = []
+                    other_ports = []
                     for link in self.core_links[switch]:
-                        ports.append(link)
+                        if other_switch in self.core_links[switch][link]:
+                            ports.append(link)
+                        else:
+                            other_ports.append(link)
+                    ports.extend(other_ports)
                     if details["addr_type"] == 'ipv4':
                         self.other_ipv4_acl(addr, ports, acl_num)
                     if details["addr_type"] == 'ipv6':
