@@ -8,12 +8,7 @@ dps:
     hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "S1,Ethernet 1,S2,Ethernet 1"
-        opstatus_reconf: false
-        native_vlan: 100
-        acl_in: 1
-      2:
-        name: "S1,Ethernet 2,S3,Ethernet 2"
+        name: "S1,Ethernet 1,C1,Ethernet 1"
         opstatus_reconf: false
         native_vlan: 100
         acl_in: 1
@@ -34,12 +29,7 @@ dps:
     hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "S2,Ethernet 1,S1,Ethernet 1"
-        opstatus_reconf: false
-        native_vlan: 100
-        acl_in: 2
-      2:
-        name: "S2,Ethernet 2,S3,Ethernet 1"
+        name: "S2,Ethernet 1,C1,Ethernet 2"
         opstatus_reconf: false
         native_vlan: 100
         acl_in: 2
@@ -60,12 +50,7 @@ dps:
     hardware: "Open vSwitch"
     interfaces:
       1:
-        name: "S3,Ethernet 1,S2,Ethernet 2"
-        opstatus_reconf: false
-        native_vlan: 100
-        acl_in: 3
-      2:
-        name: "S3,Ethernet 2,S1,Ethernet 2"
+        name: "S3,Ethernet 1,C2,Ethernet 1"
         opstatus_reconf: false
         native_vlan: 100
         acl_in: 3
@@ -96,6 +81,13 @@ acls:
         output:
           port: 3
   - rule:
+      dl_dst: "03:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:01"
+          port: 3
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.2"
@@ -106,6 +98,13 @@ acls:
       dl_dst: "00:00:00:00:00:02"
       actions:
         output:
+          port: 4
+  - rule:
+      dl_dst: "04:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:02"
           port: 4
   - rule:
       dl_type: '0x806'
@@ -120,125 +119,108 @@ acls:
         output:
           port: 5
   - rule:
+      dl_dst: "05:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:03"
+          port: 5
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.4"
       actions:
         output:
-          failover:
-            group_id: 1
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:03:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:04"
       actions:
         output:
-          failover:
-            group_id: 2
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:03:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.5"
       actions:
         output:
-          failover:
-            group_id: 3
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:04:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:05"
       actions:
         output:
-          failover:
-            group_id: 4
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:04:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.6"
       actions:
         output:
-          failover:
-            group_id: 5
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:05:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:06"
       actions:
         output:
-          failover:
-            group_id: 6
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:05:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.7"
       actions:
         output:
-          failover:
-            group_id: 7
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:03:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:07"
       actions:
         output:
-          failover:
-            group_id: 8
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:03:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.8"
       actions:
         output:
-          failover:
-            group_id: 9
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:04:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:08"
       actions:
         output:
-          failover:
-            group_id: 10
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:04:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.9"
       actions:
         output:
-          failover:
-            group_id: 11
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:05:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:09"
       actions:
         output:
-          failover:
-            group_id: 12
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:05:00:00:00"
+          port: 1
   2:
   - rule:
       dl_type: '0x806'
@@ -253,6 +235,13 @@ acls:
         output:
           port: 3
   - rule:
+      dl_dst: "03:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:04"
+          port: 3
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.5"
@@ -263,6 +252,13 @@ acls:
       dl_dst: "00:00:00:00:00:05"
       actions:
         output:
+          port: 4
+  - rule:
+      dl_dst: "04:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:05"
           port: 4
   - rule:
       dl_type: '0x806'
@@ -277,125 +273,108 @@ acls:
         output:
           port: 5
   - rule:
+      dl_dst: "05:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:06"
+          port: 5
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.1"
       actions:
         output:
-          failover:
-            group_id: 1001
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:03:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:01"
       actions:
         output:
-          failover:
-            group_id: 1002
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:03:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.2"
       actions:
         output:
-          failover:
-            group_id: 1003
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:04:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:02"
       actions:
         output:
-          failover:
-            group_id: 1004
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:04:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.3"
       actions:
         output:
-          failover:
-            group_id: 1005
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:05:00:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:03"
       actions:
         output:
-          failover:
-            group_id: 1006
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "01:05:00:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.7"
       actions:
         output:
-          failover:
-            group_id: 1007
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:03:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:07"
       actions:
         output:
-          failover:
-            group_id: 1008
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:03:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.8"
       actions:
         output:
-          failover:
-            group_id: 1009
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:04:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:08"
       actions:
         output:
-          failover:
-            group_id: 1010
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:04:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.9"
       actions:
         output:
-          failover:
-            group_id: 1011
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:05:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:09"
       actions:
         output:
-          failover:
-            group_id: 1012
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "03:01:05:00:00:00"
+          port: 1
   3:
   - rule:
       dl_type: '0x806'
@@ -410,6 +389,13 @@ acls:
         output:
           port: 3
   - rule:
+      dl_dst: "03:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:07"
+          port: 3
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.8"
@@ -420,6 +406,13 @@ acls:
       dl_dst: "00:00:00:00:00:08"
       actions:
         output:
+          port: 4
+  - rule:
+      dl_dst: "04:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:08"
           port: 4
   - rule:
       dl_type: '0x806'
@@ -434,122 +427,105 @@ acls:
         output:
           port: 5
   - rule:
+      dl_dst: "05:00:00:00:00:00"
+      actions:
+        output:
+          set_fields:
+          - eth_dst: "00:00:00:00:00:09"
+          port: 5
+  - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.1"
       actions:
         output:
-          failover:
-            group_id: 2001
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:03:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:01"
       actions:
         output:
-          failover:
-            group_id: 2002
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:03:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.2"
       actions:
         output:
-          failover:
-            group_id: 2003
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:04:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:02"
       actions:
         output:
-          failover:
-            group_id: 2004
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:04:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.3"
       actions:
         output:
-          failover:
-            group_id: 2005
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:05:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:03"
       actions:
         output:
-          failover:
-            group_id: 2006
-            ports:
-            - 2
-            - 1
+          set_fields:
+          - eth_dst: "02:01:05:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.4"
       actions:
         output:
-          failover:
-            group_id: 2007
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:03:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:04"
       actions:
         output:
-          failover:
-            group_id: 2008
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:03:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.5"
       actions:
         output:
-          failover:
-            group_id: 2009
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:04:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:05"
       actions:
         output:
-          failover:
-            group_id: 2010
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:04:00:00:00"
+          port: 1
   - rule:
       dl_type: '0x806'
       dl_dst: "ff:ff:ff:ff:ff:ff"
       arp_tpa: "10.0.0.6"
       actions:
         output:
-          failover:
-            group_id: 2011
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:05:00:00:00"
+          port: 1
   - rule:
       dl_dst: "00:00:00:00:00:06"
       actions:
         output:
-          failover:
-            group_id: 2012
-            ports:
-            - 1
-            - 2
+          set_fields:
+          - eth_dst: "02:02:05:00:00:00"
+          port: 1
