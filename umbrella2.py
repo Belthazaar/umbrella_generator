@@ -213,29 +213,26 @@ class Umbrella():
                 # route = self.dijkstra(self.graph, switch, other_switch)
                 for addr, details in \
                         self.addresses_to_ports[other_switch].items():
-                    ports = None
                     route = Umbrella.dijkstra(self.graph,
                                               switch, details['name'])
 
-                    # print(route)
-                    # Used for group-failover. Current implementation is unknown
-                    # Leaving as comment for when a solution is found
-                    # ports = []
-                    # other_ports = []
-                    # for link in self.core_links[switch]:
-                    #     if other_switch in self.core_links[switch][link]:
-                    #         ports.append(link)
-                    #     else:
-                    #         other_ports.append(link)
-                    # ports.extend(other_ports)
                     if len(route) <= 3:
+                        ports = []
+                        other_ports = []
+                        for link in self.core_links[switch]:
+                            if other_switch in self.core_links[switch][link]:
+                                ports.append(link)
+                            else:
+                                other_ports.append(link)
+                        ports.extend(other_ports)
                         if details["addr_type"] == 'ipv4':
                             self.__other_ipv4_acl(addr, ports, acl_num)
                         if details["addr_type"] == 'ipv6':
                             self.__other_ipv6_acl(addr, ports, acl_num)
                         if details["addr_type"] == 'mac':
                             self.__other_mac_acl(addr, ports, acl_num)
-                    self.__umbrella_acl(addr, details["addr_type"],
+                    else:
+                        self.__umbrella_acl(addr, details["addr_type"],
                                         acl_num, route, switch)
 
     def __umbrella_acl(self, addr, addr_type, acl_num, route, switch):
