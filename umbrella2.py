@@ -150,6 +150,10 @@ class Umbrella():
                     f_iface[iface]["tagged_vlans"] = vids
                     continue
 
+                # No need to generate configs for ports that's not configured ;)
+                if not port_dict["configured"]:
+                    continue
+
                 # Checks type of address, and stores it to use in ACLS later
                 for vlan, details in port_dict['vlans'].items():
                     if details["details"]["ipv4_addresses"]:
